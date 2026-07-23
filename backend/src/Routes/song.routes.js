@@ -37,24 +37,30 @@ router.post('/', upload.single('audio'), async (req, res) => {
 });
 
 // Get songs
-router.get('/', async (req, res) => {
-    try {
-        const { mood } = req.query;
-        const filter = mood ? { mood } : {};
+router.get("/", async (req, res) => {
+  try {
+    const { mood } = req.query;
 
-        const songs = await songModel.find(filter);
+    let filter = {};
 
-        res.status(200).json({
-            message: "songs fetched successfully",
-            songs
-        });
-
-    } catch (error) {
-        res.status(500).json({
-            message: "Error fetching songs",
-            error: error.message
-        });
+    if (mood) {
+      filter = {
+        mood: { $regex: `^${mood}$`, $options: "i" }
+      };
     }
+
+    const songs = await songModel.find(filter);
+
+    res.status(200).json({
+      message: "songs fetched successfully",
+      songs,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error fetching songs",
+      error: error.message,
+    });
+  }
 });
 
 module.exports = router;
