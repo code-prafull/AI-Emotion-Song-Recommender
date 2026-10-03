@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Song = ({ songs }) => {
   return (
     <div className="space-y-4 w-full max-w-2xl mx-auto p-4">
@@ -47,7 +45,7 @@ const Song = ({ songs }) => {
               <audio
                 controls
                 src={s.audio}
-                className="w-full h-9 spotify-audio-player opacity-9opath hover:opacity-100 transition-opacity"
+                className="w-full h-9 spotify-audio-player opacity-90 hover:opacity-100 transition-opacity"
               />
             </div>
 

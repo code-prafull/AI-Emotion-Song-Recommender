@@ -1,10 +1,13 @@
 require('dotenv').config();
 
 const app = require('./src/app');
-const connectDb = require('./src/db/db'); // no .js needed here
+const connectDb = require('./src/db/db');
 
 connectDb();
 
-app.listen(3000, () => {
-    console.log("Server is ready");
+// Hosting platforms (Render, Railway, Heroku...) assign their own port.
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Server is ready on port ${PORT}`);
 });

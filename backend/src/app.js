@@ -8,6 +8,11 @@ app.use(cors());
 
 app.use(express.json());
 
+// Health check - hosting platforms ping "/" to verify the deploy is alive.
+app.get('/', (req, res) => {
+    res.status(200).json({ status: 'ok', service: 'AI-Emotion-Song-Recommender API' });
+});
+
 app.use('/song', songRoutes);
 
 module.exports = app;

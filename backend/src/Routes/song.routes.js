@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const multer = require('multer');
 const songModel = require('../models/song.mode');
 const { uploadFile } = require('../Service/storage.service');
@@ -6,6 +7,18 @@ const { uploadFile } = require('../Service/storage.service');
 const router = express.Router();
 
 const upload = multer({ storage: multer.memoryStorage() });
+
+// Fail fast instead of hanging when the DB is unavailable.
+function requireDb(req, res, next) {
+    if (mongoose.connection.readyState !== 1) {
+        return res.status(503).json({
+            message: "Database not connected. Check MONGODB_URL and restart the server."
+        });
+    }
+    next();
+}
+
+router.use(requireDb);
 
 // Create song
 router.post('/', upload.single('audio'), async (req, res) => {
